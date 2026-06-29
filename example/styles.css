@@ -640,16 +640,31 @@ section h2 {
 }
 
 .readme-content pre {
-  background: #1a1d23;
-  color: #e2e5eb;
-  padding: 1rem 1.25rem;
   border-radius: var(--radius);
   overflow-x: auto;
   font-size: 0.8125rem;
-  line-height: 1.5;
+  line-height: 1.55;
+  margin: 1rem 0;
+  padding: 0;
+  border: 1px solid #30363d;
 }
 
-.readme-content pre code {
+.readme-content pre code.hljs {
+  display: block;
+  padding: 1rem 1.25rem;
+  background: #0d1117;
+  font-family: var(--mono);
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.readme-content pre:not(:has(.hljs)) {
+  background: #0d1117;
+  color: #e2e5eb;
+  padding: 1rem 1.25rem;
+}
+
+.readme-content pre:not(:has(.hljs)) code {
   background: none;
   padding: 0;
   color: inherit;

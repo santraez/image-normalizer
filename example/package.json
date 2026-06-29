@@ -8,8 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "highlight.js": "^11.11.1",
     "image-normalizer": "file:..",
-    "marked": "^15.0.12"
+    "marked": "^15.0.12",
+    "marked-highlight": "^2.2.1"
   },
   "devDependencies": {
     "typescript": "^5.8.3",

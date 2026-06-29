@@ -1,4 +1,11 @@
 import { marked } from "marked";
+import { markedHighlight } from "marked-highlight";
+import hljs from "highlight.js/lib/core";
+import typescript from "highlight.js/lib/languages/typescript";
+import javascript from "highlight.js/lib/languages/javascript";
+import bash from "highlight.js/lib/languages/bash";
+import xml from "highlight.js/lib/languages/xml";
+import "highlight.js/styles/github-dark.min.css";
 import {
   normalizeImage,
   UnsupportedMimeError,
@@ -449,6 +456,33 @@ resultsEl.addEventListener("click", (e) => {
 });
 
 // ── README rendering ────────────────────────────────────────────────────────
+
+const LANG_ALIASES: Record<string, string> = {
+  ts: "typescript",
+  tsx: "typescript",
+  js: "javascript",
+  sh: "bash",
+};
+
+hljs.registerLanguage("typescript", typescript);
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("bash", bash);
+hljs.registerLanguage("html", xml);
+hljs.registerLanguage("xml", xml);
+
+marked.use(
+  markedHighlight({
+    async: false,
+    langPrefix: "hljs language-",
+    highlight(code, lang) {
+      const language = LANG_ALIASES[lang] ?? lang;
+      if (language && hljs.getLanguage(language)) {
+        return hljs.highlight(code, { language }).value;
+      }
+      return escapeHtml(code);
+    },
+  }),
+);
 
 function renderReadme(): void {
   const readmeEl = document.querySelector<HTMLElement>("#readme-content")!;
