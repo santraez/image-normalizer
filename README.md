@@ -1,3 +1,7 @@
+<p align="center">
+  <img src=".github/assets/cover.jpg" alt="image-normalizer — validate, convert, and compress images in the browser before upload" width="100%" />
+</p>
+
 # image-normalizer
 
 TypeScript library for preprocessing and normalizing images in **browser** web applications.
