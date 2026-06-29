@@ -2,6 +2,18 @@
   "name": "image-normalizer",
   "version": "0.1.0",
   "description": "TypeScript library for preprocessing and normalizing images in web applications",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santraez/image-normalizer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/santraez/image-normalizer/issues"
+  },
+  "homepage": "https://github.com/santraez/image-normalizer#readme",
+  "author": {
+    "name": "Santiago Ramos",
+    "url": "https://github.com/santraez"
+  },
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs",
@@ -38,14 +50,25 @@
   },
   "keywords": [
     "image",
-    "normalize",
+    "image-upload",
+    "image-processing",
+    "image-normalization",
+    "image-compression",
+    "compression",
+    "resize",
     "browser",
-    "file",
-    "blob",
+    "typescript",
     "heic",
-    "compression"
+    "heif",
+    "webp",
+    "jpeg",
+    "upload",
+    "client-side"
   ],
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "packageManager": "pnpm@9.15.0",
   "dependencies": {
     "browser-image-compression": "^2.0.2",
