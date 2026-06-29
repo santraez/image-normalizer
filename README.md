@@ -2,6 +2,8 @@
 
 TypeScript library for preprocessing and normalizing images in **browser** web applications.
 
+**[Live demo](https://santraez.github.io/image-normalizer/)** — interactive playground with full documentation.
+
 Users pick photos from any device — Android, iPhone, or desktop — and you get back a validated, resized, compressed `File` ready to upload. One function handles MIME detection, HEIC conversion, validation, and compression.
 
 ## Table of contents

@@ -22,6 +22,7 @@ import type {
   OutputFormat,
 } from "image-normalizer";
 import readme from "../README.md?raw";
+import "./styles.css";
 
 // ── DOM refs ────────────────────────────────────────────────────────────────
 
