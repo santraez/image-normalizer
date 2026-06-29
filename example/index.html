@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>image-normalizer — Interactive Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="#">image-normalizer</a>
+        <nav class="site-nav" aria-label="Page sections">
+          <a href="#playground">Playground</a>
+          <a href="#pipeline">Pipeline</a>
+          <a href="#docs">Docs</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero container">
+        <p class="eyebrow">Browser-only TypeScript library</p>
+        <h1>Normalize images before upload</h1>
+        <p class="hero-lead">
+          Detect real MIME types, convert HEIC from iPhones, validate size, and
+          compress — all client-side. One function, zero server round-trips.
+        </p>
+        <a class="btn btn-primary" href="#playground">Try the playground</a>
+      </section>
+
+      <section id="playground" class="playground container" aria-labelledby="playground-title">
+        <h2 id="playground-title">Playground</h2>
+        <p class="section-lead">
+          Drop images or pick files. Every option maps directly to
+          <code>NormalizeImageOptions</code>.
+        </p>
+
+        <div class="playground-grid">
+          <div class="panel panel-input">
+            <div
+              id="drop-zone"
+              class="drop-zone"
+              role="button"
+              tabindex="0"
+              aria-label="Drop images here or click to browse"
+            >
+              <div class="drop-zone-content">
+                <span class="drop-icon" aria-hidden="true">↓</span>
+                <p>Drop images here</p>
+                <p class="drop-hint">or click to browse · multiple files supported</p>
+              </div>
+              <input
+                id="file-input"
+                type="file"
+                accept="image/*"
+                multiple
+                hidden
+              />
+            </div>
+
+            <fieldset class="options-fieldset">
+              <legend>Options</legend>
+
+              <div class="option-row">
+                <label for="output-format">outputFormat</label>
+                <select id="output-format">
+                  <option value="image/jpeg">image/jpeg</option>
+                  <option value="image/png">image/png</option>
+                  <option value="image/webp">image/webp</option>
+                </select>
+              </div>
+
+              <div class="option-row">
+                <label for="quality">
+                  quality
+                  <span id="quality-value" class="mono">0.80</span>
+                </label>
+                <input
+                  id="quality"
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value="0.8"
+                />
+              </div>
+
+              <div class="option-row">
+                <label for="max-dimension">maxWidthOrHeight</label>
+                <input
+                  id="max-dimension"
+                  type="number"
+                  min="100"
+                  max="8192"
+                  value="2048"
+                />
+              </div>
+
+              <div class="option-row">
+                <span class="option-label">acceptedTypes</span>
+                <div id="accepted-types" class="checkbox-group">
+                  <label><input type="checkbox" value="image/jpeg" checked /> JPEG</label>
+                  <label><input type="checkbox" value="image/png" checked /> PNG</label>
+                  <label><input type="checkbox" value="image/webp" checked /> WebP</label>
+                  <label><input type="checkbox" value="image/heic" checked /> HEIC</label>
+                  <label><input type="checkbox" value="image/heif" checked /> HEIF</label>
+                </div>
+              </div>
+
+              <div class="option-row">
+                <label for="max-size-mb">maxFileSizeMB</label>
+                <input
+                  id="max-size-mb"
+                  type="number"
+                  min="0.1"
+                  max="100"
+                  step="0.1"
+                  value="10"
+                />
+              </div>
+
+              <div class="option-row option-row-toggle">
+                <label class="toggle-label">
+                  <input id="use-exact-bytes" type="checkbox" />
+                  Override with maxFileSize (bytes)
+                </label>
+                <input
+                  id="max-size-bytes"
+                  type="number"
+                  min="1"
+                  value="5242880"
+                  disabled
+                />
+              </div>
+
+              <div class="option-row option-row-toggle">
+                <label class="toggle-label">
+                  <input id="use-web-worker" type="checkbox" checked />
+                  useWebWorker
+                </label>
+              </div>
+
+              <div class="option-actions">
+                <button id="process-btn" class="btn btn-primary" type="button" disabled>
+                  Normalize
+                </button>
+                <button id="cancel-btn" class="btn btn-secondary" type="button" hidden>
+                  Cancel
+                </button>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="panel panel-output">
+            <div id="status-bar" class="status-bar" role="status" aria-live="polite">
+              Select one or more images to begin.
+            </div>
+
+            <div id="error-panel" class="error-panel" hidden role="alert"></div>
+
+            <div id="results" class="results"></div>
+
+            <aside class="hints" aria-label="Try these scenarios">
+              <p class="hints-title">Try these</p>
+              <ul>
+                <li>Upload a <strong>GIF</strong> → <code>UNSUPPORTED_MIME</code></li>
+                <li>Lower <strong>maxFileSizeMB</strong> → <code>FILE_TOO_LARGE</code></li>
+                <li>Uncheck all <strong>acceptedTypes</strong> → rejection on any file</li>
+                <li>Click <strong>Cancel</strong> during processing → abort via <code>AbortSignal</code></li>
+                <li>iPhone <strong>HEIC</strong> photos convert to your chosen output format</li>
+              </ul>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section id="pipeline" class="pipeline-section container" aria-labelledby="pipeline-title">
+        <h2 id="pipeline-title">How it works</h2>
+        <p class="section-lead">
+          The same pipeline runs on every file. Steps light up during processing.
+        </p>
+
+        <ol id="pipeline-steps" class="pipeline-steps" aria-label="Processing pipeline">
+          <li class="pipeline-step" data-step="detect">
+            <span class="step-num">1</span>
+            <span class="step-label">Detect MIME</span>
+            <span class="step-detail">file-type (magic bytes)</span>
+          </li>
+          <li class="pipeline-step" data-step="validate">
+            <span class="step-num">2</span>
+            <span class="step-label">Validate type</span>
+            <span class="step-detail">against acceptedTypes</span>
+          </li>
+          <li class="pipeline-step" data-step="size">
+            <span class="step-num">3</span>
+            <span class="step-label">Validate size</span>
+            <span class="step-detail">against maxFileSize</span>
+          </li>
+          <li class="pipeline-step" data-step="heic">
+            <span class="step-num">4</span>
+            <span class="step-label">Convert HEIC</span>
+            <span class="step-detail">heic-to (if needed)</span>
+          </li>
+          <li class="pipeline-step" data-step="compress">
+            <span class="step-num">5</span>
+            <span class="step-label">Compress</span>
+            <span class="step-detail">browser-image-compression</span>
+          </li>
+          <li class="pipeline-step" data-step="result">
+            <span class="step-num">6</span>
+            <span class="step-label">Build result</span>
+            <span class="step-detail">new File + metadata</span>
+          </li>
+        </ol>
+      </section>
+
+      <section id="docs" class="docs-section container" aria-labelledby="docs-title">
+        <h2 id="docs-title">Documentation</h2>
+        <p class="section-lead">Full README rendered from the repository.</p>
+        <article id="readme-content" class="readme-content"></article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>MIT License · <a href="https://github.com/santraez/image-normalizer">GitHub</a></p>
+      </div>
+    </footer>
+
+    <script type="module" src="/main.ts"></script>
+  </body>
+</html>

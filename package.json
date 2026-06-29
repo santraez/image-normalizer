@@ -46,6 +46,9 @@
     "lint": "eslint .",
     "format": "prettier --check .",
     "format:write": "prettier --write .",
+    "example:dev": "pnpm build && pnpm --dir example dev",
+    "example:build": "pnpm build && pnpm --dir example build",
+    "example:preview": "pnpm --dir example preview",
     "prepublishOnly": "pnpm run build && pnpm run typecheck && pnpm run test:run"
   },
   "keywords": [
