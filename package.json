@@ -1,6 +1,6 @@
 {
   "name": "image-normalizer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Client-side image preprocessing library with MIME validation, HEIC conversion and image compression.",
   "repository": {
     "type": "git",
