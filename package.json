@@ -1,7 +1,7 @@
 {
   "name": "image-normalizer",
-  "version": "0.1.0",
-  "description": "TypeScript library for preprocessing and normalizing images in web applications",
+  "version": "1.0.0",
+  "description": "Client-side image preprocessing library with MIME validation, HEIC conversion and image compression.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/santraez/image-normalizer.git"
@@ -70,6 +70,9 @@
     "node": ">=18"
   },
   "packageManager": "pnpm@9.15.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "browser-image-compression": "^2.0.2",
     "file-type": "^21.0.0",
